@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
+import decibel as db
 
 class PropagationModel:
     def __init__(self, P_T, G_T, G_R, **kwargs):
@@ -9,7 +10,6 @@ class PropagationModel:
 
         if("shadowing_std" in kwargs):
             self.sigma = kwargs["shadowing_std"]
-        if("")
 
     def P_R(self, distance):
         return self.P_T*self.G_T*self.G_R/self.propagation_loss(distance)
@@ -50,7 +50,7 @@ class OkumuraHataModel(FlatTerrainModel):
             a = (1.1*np.log10(self.f/10**6) - 0.7) * self.H_R - (1.56 * np.log10(self.f/10**6) - 0.8)
         elif(self.f < 400000000): #<400Mhz
             a = 8.29 * np.power(np.log10(1.54 * self.H_R), 2) - 1.1
-        else:
+        else: #>400Mhz
             a = 3.2 * np.power(np.log10(11.75 * self.H_R), 2) - 4.97
 
-        return 69.55 + 26.16 * np.log10(self.f/10**6) - 13.82 * np.log10(self.H_T) - a + (44.9 - 6.55 * np.log10(self.H_T)) * np.log10(distance)
+        return db.from_dB(69.55 + 26.16 * np.log10(self.f/10**6) - 13.82 * np.log10(self.H_T) - a + (44.9 - 6.55 * np.log10(self.H_T)) * np.log10(distance))
