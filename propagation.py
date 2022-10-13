@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 import numpy as np
 import decibel as db
 
@@ -44,7 +44,7 @@ class OkumuraHataModel(FlatTerrainModel):
 
     def propagation_loss(self, distance):
         #Convert to km
-        distance /= 1000
+        distance = distance / 1000
 
         if(self.f < 200000000): #<200MHz
             a = (1.1*np.log10(self.f/10**6) - 0.7) * self.H_R - (1.56 * np.log10(self.f/10**6) - 0.8)
@@ -54,3 +54,12 @@ class OkumuraHataModel(FlatTerrainModel):
             a = 3.2 * np.power(np.log10(11.75 * self.H_R), 2) - 4.97
 
         return db.from_dB(69.55 + 26.16 * np.log10(self.f/10**6) - 13.82 * np.log10(self.H_T) - a + (44.9 - 6.55 * np.log10(self.H_T)) * np.log10(distance))
+
+class AlphaModel(PropagationModel):
+    def __init__(self, P_T, G_T, G_R, alpha, k):
+        super().__init__(P_T, G_T, G_R)
+        self.alpha = alpha
+        self.k = k
+
+    def propagation_loss(self, distance):
+        return self.k * np.power(distance, self.alpha)
