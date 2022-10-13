@@ -8,4 +8,4 @@ class ShadowingModel:
         self.__dict__.update(kwargs)
 
     def prob_threshhold_signal(self, P_r_dbm, P_s_dbm):
-        return 1/2 + 1/2 * erf((P_r_dbm - P_s_dbm)/np.sqrt(2) * self.shadowing_std_db)
+        return 1/2 + 1/2 * erf((P_r_dbm - P_s_dbm)/(np.sqrt(2) * self.shadowing_std_db))

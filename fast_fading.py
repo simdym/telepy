@@ -22,6 +22,8 @@ class RayleighChannel(FadingModel):
     def P_b(self, sinr):
         return 1/2 * (1 - 1/(np.sqrt(1 + 2/sinr)))
 
-    def sinr(self, P_b):
-        return 2 / (1/np.power(1 - 2 * P_b, 2) - 1)
-
+    def sinr(self, P_b, M = 1):
+        if(M==1):
+            return 2 / (1/np.power(1 - 2 * P_b, 2) - 1)
+        elif(M==2):
+            return 1 / np.sqrt(4/3 * P_b)

@@ -47,9 +47,9 @@ class OkumuraHataModel(FlatTerrainModel):
         distance = distance / 1000
 
         if(self.f < 200000000): #<200MHz
-            a = (1.1*np.log10(self.f/10**6) - 0.7) * self.H_R - (1.56 * np.log10(self.f/10**6) - 0.8)
-        elif(self.f < 400000000): #<400Mhz
             a = 8.29 * np.power(np.log10(1.54 * self.H_R), 2) - 1.1
+        elif(self.f < 400000000): #<400Mhz
+            a = (1.1 * np.log10(self.f / 10 ** 6) - 0.7) * self.H_R - (1.56 * np.log10(self.f / 10 ** 6) - 0.8)
         else: #>400Mhz
             a = 3.2 * np.power(np.log10(11.75 * self.H_R), 2) - 4.97
 
